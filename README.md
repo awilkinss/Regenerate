@@ -13,7 +13,7 @@ This will create our very own ~~non-magenta~~ enviornment!
 The environment is important because it replaces sklearn's unfinished autoencoder commands with working versions. Thanks @kingfengji 
 
 ## Discord:
-Join for project updates, suggestions, and assignments. Way better than an email chain or repo edit history I promise
+Join for project updates, suggestions, and assignments. Way better than an email chain or repo edit history I promise, just make sure to make a new forum post for each new code file so we're all up to date
 https://discord.gg/DKwc2nHMEF
 
 ### Further Details:
