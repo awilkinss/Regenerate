@@ -14,3 +14,9 @@ This will create our very own ~~non-magenta~~ enviornment!
 Join for project updates, suggestions, and assignments. Way better than an email chain or repo edit history I promise
 https://discord.gg/DKwc2nHMEF
 
+### Further Details:
+
+If you wanna read up on the stuff we're using (you probably should) here's the sauce
+- https://github.com/kingfengji/eForest (Eforest Original Repo; no need to install it's already in our conda environment)
+- Music21 guides [https://web.mit.edu/music21/doc/index.html] and modules [https://web.mit.edu/music21/doc/py-modindex.html]
+- The tds post that explains what the hell eforest/autoencoders even are [https://towardsdatascience.com/building-a-simple-auto-encoder-via-decision-trees-28ba9342a349]
