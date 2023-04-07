@@ -10,6 +10,8 @@ We train a random forest model to predict notes and chords to accompany a piano 
 Download *regenerate.yml* from the repo and run the command **conda env create -f regenerate.yml**
 This will create our very own ~~non-magenta~~ enviornment!
 
+The environment is important because it replaces sklearn's unfinished autoencoder commands with working versions. Thanks @kingfengji 
+
 ## Discord:
 Join for project updates, suggestions, and assignments. Way better than an email chain or repo edit history I promise
 https://discord.gg/DKwc2nHMEF
