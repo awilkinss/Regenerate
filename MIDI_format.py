@@ -25,16 +25,16 @@ def read_midi(dir_name):
             for element in midi_stream.flat.notesAndRests:
                 # print("element:",element)
                 if isinstance(element,music21.note.Note):
-                    name = element.nameWithOctave
-                    duration = element.duration.type
+                    name = str(element.nameWithOctave)
+                    duration = str(element.duration.type)
                     velocity = velocity_to_dynamic(element.volume.velocity)
 
-                    note_events.append([name,duration,velocity])
-                    chord_events.append([None,duration,None])
+                    # note_events.append([name,duration,velocity])
+                    # chord_events.append([None,duration,None])
                     
                 elif isinstance(element,music21.chord.Chord):
                     #collapse into string of pitch name
-                    name = element.pitchedCommonName
+                    name = str(element.pitchedCommonName)
 
                     #chord symbols are pretty cringe, they cant get octaves and crash often, maybe find an alternative
 
@@ -43,25 +43,17 @@ def read_midi(dir_name):
                     # name = str(symbol)
 
                     #pitches (normal order string[its classification anyway])
-                    pitches = element.normalOrderString
+                    pitches = str(element.normalOrderString)
                     #collapse duration into float
-                    duration = element.duration.type
+                    duration = str(element.duration.type)
                     #encoded velocity
                     velocity = velocity_to_dynamic(element.volume.velocity)
 
                     #append to chord list
                     chord_events.append([name,pitches,duration,velocity])
+
                     #append a rest of equal length to note list
-                    note_events.append([None,None,duration,None])
-                    
-                else: #element is a rest
-                    #encoded duration
-                    duration = element.duration.type
-
-                    #append to both lists
-
-                    note_events.append([None,None,duration,None])
-                    chord_events.append([None,None,duration,None])
+                    # note_events.append([None,None,duration,None])
 
     return [note_events,chord_events]
 
