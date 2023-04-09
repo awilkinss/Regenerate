@@ -1,7 +1,7 @@
 import os
 import music21
 
-from music21 import converter, harmony #armony might be used for chord symbols
+from music21 import base, converter, harmony #armony might be used for chord symbols
 
 #the goal is to strip all the info from a midi file using music21
 #we prep the data every tree in the random forest, the first thing in
@@ -20,42 +20,79 @@ def read_midi(dir_name):
             # print("midi_stream is type:",type(midi_stream))
             # print("showing text:")
             # midi_stream.show('text')
+            chord_events = get_chords(midi_stream)
 
-            # print("each element now:")
-            for element in midi_stream.flat.notesAndRests:
+            for element in midi_stream.flat.notes:
                 # print("element:",element)
                 if isinstance(element,music21.note.Note):
                     name = str(element.nameWithOctave)
                     duration = str(element.duration.type)
                     velocity = velocity_to_dynamic(element.volume.velocity)
 
-                    # note_events.append([name,duration,velocity])
+
+                    note_events.append([name,duration,velocity])
                     # chord_events.append([None,duration,None])
                     
-                elif isinstance(element,music21.chord.Chord):
-                    #collapse into string of pitch name
-                    name = str(element.pitchedCommonName)
+                # elif isinstance(element,music21.chord.Chord):
+                #     #collapse into string of pitch name
+                #     name = str(element.pitchedCommonName)
 
-                    #chord symbols are pretty cringe, they cant get octaves and crash often, maybe find an alternative
+                #     #chord symbols are pretty cringe, they cant get octaves and crash often, maybe find an alternative
 
-                    # symbol = harmony.chordSymbolFromChord(element)
-                    # print("encoded symbol:",symbol)
-                    # name = str(symbol)
+                #     # symbol = harmony.chordSymbolFromChord(element)
+                #     # print("encoded symbol:",symbol)
+                #     # name = str(symbol)
 
-                    #pitches (normal order string[its classification anyway])
-                    pitches = str(element.normalOrderString)
-                    #collapse duration into float
-                    duration = str(element.duration.type)
-                    #encoded velocity
-                    velocity = velocity_to_dynamic(element.volume.velocity)
+                #     #pitches (normal order string[its classification anyway])
+                #     pitches = str(element.normalOrderString)
+                #     #collapse duration into float
+                #     duration = str(element.duration.type)
+                #     #encoded velocity
+                #     velocity = velocity_to_dynamic(element.volume.velocity)
 
-                    #append to chord list
-                    chord_events.append([name,pitches,duration,velocity])
+                #     #append to chord list
+                #     chord_events.append([name,pitches,duration,velocity])
 
-                    #append a rest of equal length to note list
-                    # note_events.append([None,None,duration,None])
+                #     #append a rest of equal length to note list
+                #     # note_events.append([None,None,duration,None])
 
     return [note_events,chord_events]
+
+def avg(lst):
+    avg = int(sum(lst)/len(lst))
+    return avg
+
+def get_name(chrd):
+    # print("chord:",chrd)
+    # print('unison' not in chrd.commonName)
+    # print("common name:",chrd.commonName)
+    # print('velocity:',chrd.volume.velocity)
+    # print('pitches:',[str(p) for p in chrd.pitches])
+    # assemble = [str(p) for p in chrd.pitches]
+    # cs = harmony.ChordSymbol(kind='minor', kindStr='m', root='C', bass='E-')
+    # print("figure test:",cs.figure)
+
+    name = harmony.ChordSymbol(kind=chrd.quality,root=chrd.root(),bass=chrd.bass()).figure     
+
+    return name
+    
+def get_chords(score):
+    final = []
+    all_chords = score.chordify()
+    # all_chords.show('text')
+    #skips measures? only one way to find out
+    for chord in all_chords.flat:
+        if isinstance(chord,music21.chord.Chord) and 'unison' not in chord.commonName:
+            name = get_name(chord)
+            # print('name:',name)
+            # pitches = chord.normalOrderString
+            duration = str(chord.duration.type)
+            # print("duration:",duration)
+            velocity = velocity_to_dynamic(chord.volume.velocity)
+            final.append([name,duration,velocity])
+
+    return final
+
 
 def analysis(events):
     #a little data analysis here; how many kinds of chords does it encode??

@@ -20,8 +20,11 @@ def main():
     train_list,test_list,labels = convert(return_list)
 
     forest,encoder,decoder = create_model(train_list,test_list)
+    decode_list = np.array(['Fm','B-','C'])
 
     display(forest,labels)
+    print("decoded results:",decoder(decode_list))
+    
 
 def convert(return_list):
     labels = []
@@ -56,7 +59,7 @@ def create_model(train_list,test_list):
     x_test = test_list[0]
     y_test = test_list[1]
 
-    model = RandomForestClassifier(n_estimators=10, max_depth=None, n_jobs=-1)
+    model = RandomForestClassifier(n_estimators=1000, max_depth=None, n_jobs=-1)
     model.fit(x_train, y_train)
 
     X_encode = model.encode(x_test)
@@ -69,7 +72,7 @@ def display(fitted_forest,labels):
 
     # Export as dot file
     export_graphviz(estimator, out_file='tree.dot', 
-                    feature_names = ['pitches','note duration','velocity'],
+                    feature_names = ['note duration','velocity'],
                     class_names = labels,
                     rounded = True, proportion = False, 
                     precision = 2, filled = True)
